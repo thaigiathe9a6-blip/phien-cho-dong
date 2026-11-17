@@ -1,0 +1,16 @@
+{
+  "name": "phien-cho-dong-online",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Phien Cho Dong - multiplayer realtime Christmas market game",
+  "scripts": {
+    "serve": "firebase emulators:start",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:rules": "firebase deploy --only database"
+  },
+  "devDependencies": {
+    "firebase-tools": "^14.0.0"
+  }
+}
