@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phiên Chợ Đông | Christmas Market Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="snow-layer" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Phiên Chợ Đông">
+      <span class="brand-mark">✦</span>
+      <span><b>PHIÊN CHỢ ĐÔNG</b><small>THE CHRISTMAS MARKET GAME</small></span>
+    </a>
+    <div class="header-right"><span class="live-dot"></span> TRÒ CHƠI OFFLINE <span class="header-divider"></span><span>❄ Ấm áp mùa lễ hội</span></div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">A LITTLE CHRISTMAS CHALLENGE</p>
+        <h1>Một phiên chợ,<br><em>ngàn lựa chọn.</em></h1>
+        <p class="hero-description">Ghé thăm những gian hàng Giáng Sinh, cân nhắc từng đồng xu và xem đội nào có chiến lược mua sắm khéo léo nhất.</p>
+        <div class="hero-details"><span>🪙 7 xu mỗi đội</span><span>🎒 9 ô chứa</span><span>🎁 7 món hàng</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="moon"></div><div class="tree tree-back">🎄</div><div class="tree tree-front">🎄</div>
+        <div class="gift gift-one">🎁</div><div class="gift gift-two">🎁</div>
+        <div class="hero-snow">❄　✦　❄</div>
+        <div class="market-sign">CHRISTMAS<br><b>MARKET</b></div>
+      </div>
+    </section>
+
+    <section class="setup-card card" id="setup">
+      <div class="section-heading"><div><p class="eyebrow red">BEFORE THE MARKET OPENS</p><h2>Chuẩn bị đội chơi</h2></div><span class="heading-icon">🧣</span></div>
+      <div class="setup-row">
+        <label class="field-label" for="teamCount">Số đội tham gia</label>
+        <select id="teamCount"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
+      </div>
+      <div class="team-name-area"><label class="field-label">Tên các đội</label><div id="teamNames" class="team-inputs"></div></div>
+      <div class="rule-note"><span>💡</span><p>Mỗi đội có <b>7 xu</b> và một chiếc túi chứa tối đa <b>9 ô</b>. Hãy suy nghĩ kỹ trước mỗi lần mua — đôi khi giữ lại cũng là một lựa chọn hay.</p></div>
+      <button class="btn btn-primary btn-large" id="startBtn">Mở cửa phiên chợ <span>→</span></button>
+    </section>
+
+    <section class="game-area hidden" id="game">
+      <div class="game-toolbar">
+        <div class="turn-card"><span class="turn-snow">❄</span><div><small id="turnKicker">ĐANG ĐẾN LƯỢT</small><b id="turnTitle">Đội 1</b><span id="turnSub">Chọn một món hàng nhé!</span></div></div>
+        <div class="toolbar-actions"><button class="btn btn-light" id="rulesBtn">📜 Luật chơi</button><button class="btn btn-outline" id="resetBtn">Chơi lại</button></div>
+      </div>
+      <div class="quick-stats">
+        <div class="quick-stat"><span>VÒNG CHƠI</span><b id="roundNum">01</b></div>
+        <div class="quick-stat"><span>LƯỢT HIỆN TẠI</span><b id="teamNum">1 / 4</b></div>
+        <div class="quick-stat"><span>TRẠNG THÁI</span><b id="phaseLabel">Đang mở</b></div>
+      </div>
+      <div class="game-grid">
+        <section class="market-panel card">
+          <div class="section-heading market-heading"><div><p class="eyebrow red">FIND YOUR LITTLE TREASURE</p><h2>Những gian hàng nhỏ</h2></div><span class="open-sign">OPEN <i>✦</i></span></div>
+          <p class="section-caption">Mỗi lượt, đội đang chơi có thể mua tối đa một món hàng hoặc bỏ qua lượt.</p>
+          <div class="products-grid" id="products"></div>
+          <div class="turn-actions"><button class="btn btn-light" id="passBtn">Để lượt sau nhé</button><button class="btn btn-outline" id="finishBtn">Dừng mua sắm</button></div>
+          <p class="fine-print">Vòng tay chỉ có một chiếc duy nhất. Những món hàng còn lại không giới hạn số lượng.</p>
+        </section>
+        <aside class="sidebar">
+          <section class="card team-panel"><div class="side-heading"><h3>🎒 Túi đồ các đội</h3><span class="mini-label">LIVE</span></div><div id="teamBoard"></div></section>
+          <section class="card achievements-panel"><div class="side-heading"><h3>✨ Thành tựu bí mật</h3><span class="mc-label">DÀNH CHO MC</span></div><p class="side-caption">MC chọn thời điểm công bố để tạo bất ngờ cho phiên chợ.</p><div id="achievements"></div></section>
+          <section class="card log-panel"><div class="side-heading"><h3>🔔 Không khí phiên chợ</h3></div><div id="log" class="log-list"><p>Đèn đã lên, phiên chợ sắp bắt đầu…</p></div></section>
+        </aside>
+      </div>
+      <section class="card results hidden" id="results"><div class="result-top"><p class="eyebrow red">THE MARKET HAS CLOSED</p><h2>Và đội chiến thắng là…</h2><div id="winnerBox"></div></div><div class="table-wrap"><table><thead><tr><th>Hạng</th><th>Đội chơi</th><th>Điểm hàng</th><th>Xu dư</th><th>Thành tựu</th><th>Tổng điểm</th></tr></thead><tbody id="scoreRows"></tbody></table></div><div class="result-actions"><button class="btn btn-primary" id="newGameBtn">Chơi ván mới ↗</button><button class="btn btn-light" id="printBtn">In kết quả</button></div></section>
+    </section>
+    <footer><span>❄</span> MADE FOR A LITTLE CHRISTMAS FUN <span>❄</span></footer>
+  </main>
+
+  <div class="modal-backdrop hidden" id="modal"><div class="modal-card"><div class="modal-decoration">✦</div><h2 id="modalTitle">Thông báo</h2><p id="modalText"></p><div class="modal-actions"><button class="btn btn-primary" id="modalOk">Mình hiểu rồi</button></div></div></div>
+  <script src="script.js"></script>
+</body>
+</html>
