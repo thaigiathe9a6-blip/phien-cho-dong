@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phiên Chợ Đông – Mini Game</title>
+<style>
+:root{
+ --pine:#123f35;--pine2:#1d5a49;--red:#9d3540;--gold:#e5b85c;--cream:#fff8e9;
+ --ink:#26332d;--muted:#738078;--line:#eadfc9;--white:#fffdf7;--shadow:0 14px 35px #173d3020;
+}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 15% 0%,#fff3d9 0,transparent 28%),linear-gradient(135deg,#f5eddd,#e8efe7);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+button,input{font:inherit} button{cursor:pointer}
+header{background:linear-gradient(115deg,#103b32,#1b5947 65%,#8e303a);color:#fff8e9;padding:24px clamp(16px,4vw,52px) 28px;position:relative;overflow:hidden}
+header:after{content:"✦  ❄  ✧  ❄  ✦";position:absolute;right:5%;top:15px;color:#f4d68d88;font-size:32px;letter-spacing:12px;pointer-events:none}
+.kicker{font:700 11px Arial,sans-serif;letter-spacing:3px;text-transform:uppercase;color:#f1d28a}
+h1{font-size:clamp(32px,5vw,54px);margin:8px 0 4px;letter-spacing:.5px}
+.subtitle{font:14px Arial,sans-serif;color:#f6e9d1}
+.header-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{border:1px solid #ffffff45;border-radius:30px;padding:7px 12px;font:12px Arial,sans-serif;background:#ffffff12}
+main{max-width:1400px;margin:auto;padding:22px clamp(12px,3vw,34px) 48px}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+.turn-banner{background:var(--white);border:1px solid var(--line);border-left:5px solid var(--gold);padding:13px 17px;border-radius:12px;box-shadow:var(--shadow);flex:1;min-width:230px}
+.turn-banner strong{color:var(--pine);font-size:18px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:11px 15px;font:700 13px Arial,sans-serif;transition:.15s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.04)}
+.primary{background:var(--pine);color:white}.red{background:var(--red);color:white}.gold{background:#e8bd65;color:#382a12}.light{background:#fffdf7;border:1px solid var(--line);color:var(--pine)}
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.8fr);gap:18px;align-items:start}
+.panel{background:#fffdf8eF;border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);overflow:hidden}
+.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.panel-head h2{font-size:20px;color:var(--pine);margin:0}
+.small{font:12px Arial,sans-serif;color:var(--muted)}
+.shop-content{padding:18px}
+.product-stage{display:grid;grid-template-columns: minmax(180px,.8fr) minmax(230px,1.2fr);gap:18px;align-items:stretch}
+.product-art{min-height:235px;border-radius:15px;background:linear-gradient(145deg,#e8f0e5,#fff0d4);display:grid;place-items:center;position:relative;overflow:hidden;border:1px solid #e3dcc8}
+.product-art:before,.product-art:after{content:"✦";position:absolute;color:#d7b35f;font-size:24px}.product-art:before{top:18px;left:22px}.product-art:after{bottom:15px;right:22px}
+.emoji{font-size:92px;filter:drop-shadow(0 9px 5px #473c2520)}
+.product-info{display:flex;flex-direction:column;justify-content:center;gap:12px}
+.product-index{font:700 11px Arial,sans-serif;letter-spacing:2px;color:var(--red);text-transform:uppercase}
+.product-info h3{font-size:clamp(25px,3vw,34px);margin:0;color:var(--pine)}
+.product-note{font:13px Arial,sans-serif;color:var(--muted);margin-top:-7px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:4px}
+.stat{border-radius:12px;padding:12px 10px;text-align:center;background:#f4efe3;border:1px solid #e9dfcc}
+.stat.price{background:#fff0d0;border-color:#e7c46f}.stat.slots{background:#e7f0e9;border-color:#bdd4c2}.stat.points{background:#fae8e8;border-color:#e4b8b8}
+.stat span{display:block;font:700 10px Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#66736a}
+.stat b{display:block;font:800 clamp(24px,3vw,34px) Arial,sans-serif;margin-top:3px;line-height:1.1}
+.price b{color:#986316}.slots b{color:#1b674a}.points b{color:#a33340}
+.stat small{font:11px Arial,sans-serif;color:#7a817a}
+.product-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:5px}
+.product-actions button{flex:1;min-width:130px}
+.stock-note{font:12px Arial,sans-serif;color:var(--muted)}
+.team-list{padding:12px;display:grid;gap:9px}
+.team{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fffefa;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.team.active{border:2px solid var(--gold);background:#fff8e8}
+.team.done{opacity:.62}
+.team-name{font:700 15px Arial,sans-serif;color:var(--pine)}
+.team-data{display:flex;gap:12px;flex-wrap:wrap;margin-top:7px;font:12px Arial,sans-serif;color:#66736a}
+.team-data b{color:#283a31}
+.score-chip{background:#f7e8c7;color:#765018;padding:7px 10px;border-radius:9px;font:800 16px Arial,sans-serif;white-space:nowrap}
+.progress{height:6px;background:#eee8db;border-radius:9px;overflow:hidden;margin-top:8px}.progress i{display:block;height:100%;background:var(--pine2)}
+.market-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px}
+.market-item{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fffefa;display:grid;grid-template-columns:42px 1fr;gap:9px;align-items:center}
+.market-item .mini{font-size:30px}.market-item strong{font:700 13px Arial,sans-serif;color:var(--pine);display:block}
+.market-item .mini-stats{font:11px Arial,sans-serif;color:#69766d;margin-top:4px}
+.market-item .mini-stats b{color:#a13c40}
+.achievements{padding:14px;display:grid;gap:9px}
+.achievement{border:1px dashed #d9c99f;border-radius:11px;padding:11px;background:#fff9e9}
+.achievement strong{display:block;font:700 13px Arial,sans-serif;color:#79561c}
+.achievement p{font:12px Arial,sans-serif;color:#6e756d;margin:4px 0 8px;line-height:1.4}
+.achievement button{font:700 11px Arial,sans-serif;padding:7px 10px}
+.achievement.awarded{border-style:solid;background:#edf5ed;border-color:#b9d2bc}
+.achievement.awarded strong{color:#286044}
+.footer-note{padding:14px 17px;background:#f6f0e4;border-top:1px solid var(--line);font:12px/1.55 Arial,sans-serif;color:#69746d}
+.overlay{position:fixed;inset:0;background:#10251fd9;display:none;place-items:center;padding:18px;z-index:10}
+.overlay.show{display:grid}
+.modal{width:min(560px,100%);background:#fffaf0;border-radius:18px;padding:22px;box-shadow:0 25px 80px #0005}
+.modal h2{margin:0 0 8px;color:var(--pine);font-size:25px}.modal p{font:13px/1.55 Arial,sans-serif;color:#637067}
+.field{display:grid;gap:6px;margin:12px 0}.field label{font:700 12px Arial,sans-serif;color:var(--pine)}
+.field input{padding:11px;border:1px solid var(--line);border-radius:9px;background:white}
+.team-setup{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.results{display:grid;gap:9px;margin-top:14px}.result-row{display:flex;justify-content:space-between;padding:12px;background:#f4efe3;border-radius:10px;font:700 14px Arial,sans-serif}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#173f35;color:white;padding:12px 18px;border-radius:30px;font:13px Arial,sans-serif;box-shadow:var(--shadow);display:none;z-index:20}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.product-stage{grid-template-columns:1fr 1fr}.product-art{min-height:200px}}
+@media(max-width:560px){.product-stage{grid-template-columns:1fr}.product-art{min-height:155px}.emoji{font-size:70px}.stats{gap:6px}.stat{padding:10px 5px}.market-grid{grid-template-columns:1fr 1fr}.team-setup{grid-template-columns:1fr}}
+@media print{body{background:white}.actions,.product-actions,.achievement button{display:none!important}.panel{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+ <div class="kicker">❄ Christmas market · mini game</div>
+ <h1>PHIÊN CHỢ ĐÔNG</h1>
+ <div class="subtitle">Một phiên chợ nhỏ · Những lựa chọn lớn · Ai sẽ là nhà mua sắm tài ba?</div>
+ <div class="header-meta"><span class="pill">🎄 5 đội chơi</span><span class="pill">🪙 7 xu / đội</span><span class="pill">🎒 Túi 9 ô</span><span class="pill">✨ Không khí Giáng sinh</span></div>
+</header>
+<main>
+ <div class="toolbar">
+  <div class="turn-banner" id="turnBanner"><div class="small">LƯỢT ĐANG DIỄN RA</div><strong id="turnText">Đội 1 chuẩn bị dạo chợ</strong><div class="small" id="roundText">Vòng 1 · Chưa khai chợ</div></div>
+  <div class="actions">
+   <button class="btn light" onclick="openSetup()">⚙ Cài đặt đội</button>
+   <button class="btn gold" onclick="showRules()">📜 Luật chơi</button>
+   <button class="btn light" onclick="window.print()">🖨 In bảng điểm</button>
+   <button class="btn red" onclick="resetGame()">↻ Chơi lại</button>
+  </div>
+ </div>
+ <div class="layout">
+  <section class="panel">
+   <div class="panel-head"><h2>🎁 Gian hàng đang mở</h2><span class="small" id="productCounter">Món 1 / 7</span></div>
+   <div class="shop-content">
+    <div class="product-stage">
+     <div class="product-art"><div class="emoji" id="productEmoji">🧴</div></div>
+     <div class="product-info">
+      <div class="product-index" id="productIndex">MÓN HÀNG SỐ 01</div>
+      <h3 id="productName">Bình nước</h3>
+      <div class="product-note" id="productNote">Giá gốc niêm yết: 5 xu · Giảm sốc!</div>
+      <div class="stats">
+       <div class="stat price"><span>Giá tiền</span><b id="productPrice">2</b><small>xu</small></div>
+       <div class="stat slots"><span>Ô đồ</span><b id="productSlots">1</b><small>slot</small></div>
+       <div class="stat points"><span>Điểm nhận</span><b id="productPoints">2</b><small>điểm</small></div>
+      </div>
+      <div class="product-actions">
+       <button class="btn primary" id="buyBtn" onclick="buyCurrent()">🛒 Đội hiện tại mua món này</button>
+       <button class="btn light" onclick="nextProduct()">Xem món kế tiếp →</button>
+      </div>
+      <div class="stock-note" id="stockNote">Hàng có sẵn · Mỗi lượt mua tối đa 1 món.</div>
+     </div>
+    </div>
+   </div>
+   <div class="footer-note">💡 MC dùng nút “Xem món kế tiếp” để lần lượt giới thiệu các gian hàng. Đội đến lượt chọn món đang hiển thị và bấm mua; có thể chuyển qua lại để xem đủ hàng trước khi quyết định.</div>
+   <div class="panel-head"><h2>🧺 Toàn bộ gian hàng</h2><span class="small">Nhấn vào món để đưa lên quầy</span></div>
+   <div class="market-grid" id="marketGrid"></div>
+  </section>
+  <aside style="display:grid;gap:18px">
+   <section class="panel">
+    <div class="panel-head"><h2>🏷️ Bảng các đội</h2><span class="small">Xu · Ô · Điểm</span></div>
+    <div class="team-list" id="teamList"></div>
+    <div class="footer-note" id="gameStatus">Chưa khai chợ. MC bấm “Bắt đầu phiên chợ” để bắt đầu.</div>
+   </section>
+   <section class="panel">
+    <div class="panel-head"><h2>🏆 Thành tựu bí mật</h2><span class="small">MC công bố khi phù hợp</span></div>
+    <div class="achievements" id="achievementList"></div>
+   </section>
+   <button class="btn primary" style="width:100%;padding:15px" id="startBtn" onclick="startGame()">🔔 BẮT ĐẦU PHIÊN CHỢ</button>
+   <button class="btn gold" style="width:100%;padding:13px" onclick="finishGame(true)">🏁 KẾT THÚC & XẾP HẠNG</button>
+  </aside>
+ </div>
+</main>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const PRODUCTS=[
+ {name:"Bình nước",price:2,slots:1,points:2,emoji:"🧴",note:"Giá gốc niêm yết: 5 xu · Giảm sốc còn 2 xu",stock:99},
+ {name:'Combo "Tránh mưa"',price:3,slots:2,points:4,emoji:"☔",note:"Gồm 1 áo mưa + 1 “áo mưa”",stock:99},
+ {name:"Thiệp Noel",price:1,slots:1,points:1,emoji:"💌",note:"Món quà nhỏ, lựa chọn tối giản",stock:99},
+ {name:"Hộp mù",price:3,slots:2,points:4,emoji:"🎁",note:"Bên trong là điều bất ngờ!",stock:99},
+ {name:"Hộp mù VIP",price:4,slots:2,points:6,emoji:"🎀",note:"Phiên bản VIP · Giá trị điểm cao hơn",stock:99},
+ {name:"Hộp Bánh Quy",price:2,displayPrice:"1,99",slots:1,points:2,emoji:"🍪",note:"Giá hiển thị 1,99 xu · Thanh toán làm tròn 2 xu",stock:99},
+ {name:"Vòng tay",price:3,slots:1,points:3,emoji:"📿",note:"Chỉ có duy nhất 1 suất trong phiên chợ!",stock:1}
+];
+const ACHIEVEMENTS=[
+ {id:"pig",name:"Heo đất",desc:"Giữ lại ít nhất 2 xu khi kết thúc · +3 điểm",points:3},
+ {id:"diamond",name:"Tài khoản kim cương",desc:"Lấp đầy chính xác 9/9 ô trong túi · +2 điểm",points:2},
+ {id:"fast",name:"Nhanh như chớp",desc:"Đội đầu tiên hoàn thành mua sắm · +2 điểm",points:2}
+];
+let teams=[],turn=0,round=1,currentProduct=0,started=false,ended=false,finalRound=false,finalRoundTurns=[],firstFinisher=null,awards={},purchaseLog=[];
+function init(){
+ teams=Array.from({length:5},(_,i)=>({name:"Đội "+(i+1),coins:7,slots:0,itemPoints:0,items:[],done:false,bonus:0}));
+ awards={};ACHIEVEMENTS.forEach(a=>awards[a.id]=[]);
+ renderAll();renderProduct(0);
+}
+function eligible(t,p){return !t.done&&t.coins>=p.price&&t.slots+p.slots<=9&&(p.name!=="Vòng tay"||PRODUCTS[6].stock>0)}
+function hasAny(t){return PRODUCTS.some(p=>eligible(t,p))}
+function activeTeam(){return teams[turn]}
+function renderProduct(i){
+ currentProduct=(i+PRODUCTS.length)%PRODUCTS.length;const p=PRODUCTS[currentProduct];
+ document.getElementById("productEmoji").textContent=p.emoji;
+ document.getElementById("productIndex").textContent="MÓN HÀNG SỐ "+String(currentProduct+1).padStart(2,"0");
+ document.getElementById("productName").textContent=p.name;
+ document.getElementById("productNote").textContent=p.note;
+ document.getElementById("productPrice").textContent=p.displayPrice||p.price;
+ document.getElementById("productSlots").textContent=p.slots;
+ document.getElementById("productPoints").textContent="+"+p.points;
+ document.getElementById("productCounter").textContent=`Món ${currentProduct+1} / ${PRODUCTS.length}`;
+ document.getElementById("stockNote").textContent=p.name==="Vòng tay"?(p.stock>0?"⚡ Chỉ còn 1 suất duy nhất!":"Đã hết suất vòng tay."):"Hàng có sẵn · Mỗi lượt mua tối đa 1 món.";
+ const t=activeTeam();const can=started&&!ended&&t&&eligible(t,p);
+ document.getElementById("buyBtn").disabled=!can;
+ document.getElementById("buyBtn").style.opacity=can?1:.45;
+ document.getElementById("buyBtn").textContent=started?(ended?"Phiên chợ đã kết thúc":`🛒 ${t.name} mua món này`):"🛒 Bắt đầu để mua hàng";
+}
+function nextProduct(){renderProduct(currentProduct+1)}
+function renderMarket(){
+ document.getElementById("marketGrid").innerHTML=PRODUCTS.map((p,i)=>`
+ <div class="market-item" onclick="renderProduct(${i})" style="cursor:pointer;outline:${i===currentProduct?'2px solid #d5ad56':'none'}">
+ <div class="mini">${p.emoji}</div><div><strong>${p.name}</strong><div class="mini-stats">💰 <b>${p.displayPrice||p.price} xu</b> &nbsp; · &nbsp; 🎒 <b>${p.slots} ô</b> &nbsp; · &nbsp; ⭐ <b>${p.points} điểm</b></div></div>
+ </div>`).join("");
+}
+function renderTeams(){
+ document.getElementById("teamList").innerHTML=teams.map((t,i)=>`
+ <div class="team ${started&&!ended&&i===turn?'active':''} ${t.done?'done':''}">
+ <div><div class="team-name">${t.name} ${i===turn&&started&&!ended?'◀ ĐANG ĐẾN LƯỢT':''} ${t.done?'· ĐÃ DỪNG':''}</div>
+ <div class="team-data"><span>🪙 <b>${t.coins}</b> xu</span><span>🎒 <b>${t.slots}/9</b> ô</span><span>⭐ <b>${t.itemPoints}</b> điểm hàng</span><span>🎁 <b>${t.bonus}</b> điểm thưởng</span></div>
+ <div class="progress"><i style="width:${t.slots/9*100}%"></i></div></div>
+ <div class="score-chip">${t.itemPoints+t.coins+t.bonus} điểm</div>
+ </div>`).join("");
+}
+function renderAchievements(){
+ document.getElementById("achievementList").innerHTML=ACHIEVEMENTS.map(a=>{
+ const winners=awards[a.id]||[];
+ return `<div class="achievement ${winners.length?'awarded':''}"><strong>${winners.length?'✓ ':''}${a.name} · +${a.points} điểm</strong><p>${a.desc}</p><div class="small">${winners.length?'Đã trao: '+winners.map(i=>teams[i].name).join(", "):'Chưa công bố'}</div><button class="btn light" onclick="awardAchievement('${a.id}')">Công bố / trao thưởng</button></div>`;
+ }).join("");
+}
+function renderStatus(){
+ const t=activeTeam();
+ document.getElementById("turnText").textContent=ended?"Phiên chợ đã khép lại":started?(t?t.name+" – đến lượt mua":"Đang hoàn tất vòng cuối"):"Sẵn sàng khai chợ";
+ document.getElementById("roundText").textContent=ended?"Đã kết thúc":started?(finalRound?"Vòng cuối cùng · Các đội còn lại mỗi đội 1 lượt":`Vòng ${round} · Mua lần lượt theo thứ tự`):"Vòng 1 · Chưa khai chợ";
+ document.getElementById("gameStatus").textContent=ended?"Phiên chợ đã kết thúc. Xem bảng xếp hạng bên dưới.":finalRound?"Đã kích hoạt vòng mua cuối. Mỗi đội còn hoạt động được thêm tối đa một lượt.":"Khi một đội không thể mua bất kỳ món nào, các đội còn lại sẽ có thêm một vòng cuối.";
+ document.getElementById("startBtn").style.display=started?"none":"block";
+}
+function renderAll(){renderMarket();renderTeams();renderAchievements();renderStatus();renderProduct(currentProduct)}
+function startGame(){if(started)return;started=true;advanceToNextEligible();renderAll();toast("Phiên chợ khai trương!")}
+function buyCurrent(){
+ if(!started||ended)return;const t=activeTeam(),p=PRODUCTS[currentProduct];
+ if(!eligible(t,p)){toast("Đội hiện tại không đủ xu, ô trống hoặc món đã hết!");return}
+ t.coins-=p.price;t.slots+=p.slots;t.itemPoints+=p.points;t.items.push(p.name);
+ if(p.name==="Vòng tay")p.stock=0;
+ purchaseLog.push({team:turn,item:p.name,round});
+ toast(`${t.name} đã mua ${p.name}!`);
+ // Buying exactly one item ends this team's turn.
+ nextTurn();
+}
+function markDone(i,reason){
+ const t=teams[i];if(t.done)return;t.done=true;
+ if(firstFinisher===null){firstFinisher=i;awards.fast=[i];t.bonus+=2;toast(`${t.name} là đội đầu tiên hoàn thành! +2 điểm Nhanh như chớp`)}
+}
+function nextTurn(){
+ if(ended)return;
+ const current=turn,t=teams[current];
+ if(!hasAny(t))markDone(current,"không còn món phù hợp");
+ if(!finalRound && t.done){
+   finalRound=true;
+   finalRoundTurns=teams.map((x,i)=>i).filter(i=>i!==current&&!teams[i].done);
+   toast("Một đội đã dừng mua. Các đội còn lại có thêm một vòng cuối!");
+   turn=finalRoundTurns.shift();
+ } else if(finalRound){
+   finalRoundTurns=finalRoundTurns.filter(i=>!teams[i].done);
+   if(finalRoundTurns.length===0){finishGame(false);return}
+   turn=finalRoundTurns.shift();
+ } else {
+   let next=(current+1)%teams.length;
+   while(teams[next].done)next=(next+1)%teams.length;
+   if(next<=current)round++;
+   turn=next;
+ }
+ // If next team cannot buy anything, it triggers the final round immediately.
+ if(!teams[turn]||!hasAny(teams[turn])){
+   if(!teams[turn]){finishGame(false);return}
+   markDone(turn,"không còn món phù hợp");
+   if(!finalRound){
+     finalRound=true;finalRoundTurns=teams.map((x,i)=>i).filter(i=>i!==turn&&!teams[i].done);
+   }
+   if(finalRoundTurns.length===0){finishGame(false);return}
+   turn=finalRoundTurns.shift();
+ }
+ renderAll();
+}
+function advanceToNextEligible(){
+ let tries=0;while(tries<teams.length&&!hasAny(teams[turn])){markDone(turn,"không còn món phù hợp");turn=(turn+1)%teams.length;tries++}
+ if(tries>=teams.length){finishGame(false)}
+}
+function awardAchievement(id){
+ if(!started){toast("Hãy bắt đầu phiên chợ trước.");return}
+ const a=ACHIEVEMENTS.find(x=>x.id===id);
+ if(id==="pig"){
+  const winners=teams.map((t,i)=>t.coins>=2?i:-1).filter(i=>i>=0);
+  winners.forEach(i=>{if(!awards.pig.includes(i)){awards.pig.push(i);teams[i].bonus+=3}});
+  toast(winners.length?`Đã trao Heo đất cho ${winners.map(i=>teams[i].name).join(", ")}`:"Chưa có đội nào đủ điều kiện Heo đất.");
+ }else if(id==="diamond"){
+  const winners=teams.map((t,i)=>t.slots===9?i:-1).filter(i=>i>=0);
+  winners.forEach(i=>{if(!awards.diamond.includes(i)){awards.diamond.push(i);teams[i].bonus+=2}});
+  toast(winners.length?`Đã trao Tài khoản kim cương cho ${winners.map(i=>teams[i].name).join(", ")}`:"Chưa có đội nào đủ 9/9 ô.");
+ }else if(id==="fast"){
+  if(firstFinisher===null){toast("Chưa có đội nào hoàn thành mua sắm.");return}
+  if(!awards.fast.includes(firstFinisher)){awards.fast=[firstFinisher];teams[firstFinisher].bonus+=2}
+  toast(`Nhanh như chớp: ${teams[firstFinisher].name} +2 điểm.`);
+ }
+ renderAll();
+}
+function finishGame(show=true){
+ if(ended)return;
+ if(!started){toast("Chưa bắt đầu phiên chợ.");return}
+ ended=true;teams.forEach((t,i)=>{if(!t.done)markDone(i,"kết thúc phiên")});
+ // Apply achievement conditions at final tally, once only.
+ teams.forEach((t,i)=>{
+  if(t.coins>=2&&!awards.pig.includes(i)){awards.pig.push(i);t.bonus+=3}
+  if(t.slots===9&&!awards.diamond.includes(i)){awards.diamond.push(i);t.bonus+=2}
+ });
+ renderAll();
+ const sorted=teams.map((t,i)=>({t,i,total:t.coins+t.itemPoints+t.bonus})).sort((a,b)=>b.total-a.total);
+ const rows=sorted.map((x,k)=>`<div class="result-row"><span>${k+1}. ${x.t.name} ${k===0?'🏆':''}<small style="display:block;font-weight:400;color:#778078;margin-top:4px">Hàng ${x.t.itemPoints} + Xu ${x.t.coins} + Thưởng ${x.t.bonus}</small></span><b>${x.total} điểm</b></div>`).join("");
+ document.getElementById("modal").innerHTML=`<h2>🏆 Kết quả Phiên Chợ Đông</h2><p>Chúc mừng các đội! Tổng điểm = điểm hàng + xu còn lại + điểm thành tựu.</p><div class="results">${rows}</div><div class="modal-actions"><button class="btn light" onclick="closeModal()">Đóng</button><button class="btn primary" onclick="closeModal();window.print()">In kết quả</button></div>`;
+ if(show)document.getElementById("overlay").classList.add("show");
+ renderAll();
+}
+function openSetup(){
+ const fields=teams.map((t,i)=>`<div class="field"><label>Đội ${i+1}</label><input id="teamName${i}" value="${t.name.replace(/"/g,'&quot;')}" maxlength="22"></div>`).join("");
+ document.getElementById("modal").innerHTML=`<h2>⚙ Cài đặt đội chơi</h2><p>Đặt tên cho tối đa 5 đội. Mỗi đội bắt đầu với 7 xu và túi 9 ô.</p><div class="team-setup">${fields}</div><div class="modal-actions"><button class="btn light" onclick="closeModal()">Hủy</button><button class="btn primary" onclick="saveSetup()">Lưu tên đội</button></div>`;
+ document.getElementById("overlay").classList.add("show");
+}
+function saveSetup(){if(started){toast("Không thể đổi tên đội sau khi bắt đầu.");return}teams.forEach((t,i)=>{let v=document.getElementById("teamName"+i).value.trim();if(v)t.name=v});closeModal();renderAll()}
+function showRules(){
+ document.getElementById("modal").innerHTML=`<h2>📜 Luật chơi</h2><p><b>1.</b> Mỗi đội bắt đầu với 7 xu và túi có tối đa 9 ô.</p><p><b>2.</b> Các đội lần lượt mua đúng 1 món trong lượt của mình. Món phải đủ xu và đủ ô trống; Vòng tay chỉ có 1 suất.</p><p><b>3.</b> Khi đến lượt một đội mà đội đó không thể mua bất kỳ món nào, đội đó dừng mua. Các đội còn lại được thêm đúng 1 lượt cuối, sau đó chợ đóng.</p><p><b>4.</b> Tổng điểm = điểm hàng + xu còn lại + điểm thành tựu.</p><p><b>5.</b> Heo đất: còn ít nhất 2 xu (+3). Tài khoản kim cương: đúng 9/9 ô (+2). Nhanh như chớp: đội đầu tiên hoàn thành mua sắm (+2).</p><p class="small">MC có thể công bố thành tựu trong lúc chơi. Heo đất và Kim cương được kiểm tra theo điều kiện thực tế; nếu trao sớm, thành tích vẫn được rà soát khi kết thúc.</p><div class="modal-actions"><button class="btn primary" onclick="closeModal()">Đã hiểu</button></div>`;
+ document.getElementById("overlay").classList.add("show");
+}
+function resetGame(){if(!confirm("Chơi lại từ đầu? Toàn bộ lượt mua và điểm sẽ được đặt lại."))return;PRODUCTS[6].stock=1;turn=0;round=1;currentProduct=0;started=false;ended=false;finalRound=false;finalRoundTurns=[];firstFinisher=null;purchaseLog=[];init();toast("Đã tạo phiên chợ mới.")}
+function closeModal(){document.getElementById("overlay").classList.remove("show")}
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>el.style.display="none",2600)}
+init();
+</script>
+</body>
+</html>
